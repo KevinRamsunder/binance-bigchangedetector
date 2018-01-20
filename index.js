@@ -39,8 +39,8 @@ symbols.forEach((pairing) => {
 
       // if new values aren't the same as the one in the cache, update and log
       if (bestBid !== cache[symbol].bid || bestAsk !== cache[symbol].ask) {
-        let bidDelta = cache[symbol].bid === null ? false : (cache[symbol].bid - bestBid)/(cache[symbol].bid);
-        let askDelta = cache[symbol].ask === null ? false : (cache[symbol].ask - bestAsk)/(cache[symbol].ask);
+        let bidDelta = cache[symbol].bid === null ? false : ((cache[symbol].bid - bestBid)/(cache[symbol].bid));
+        let askDelta = cache[symbol].ask === null ? false : ((cache[symbol].ask - bestAsk)/(cache[symbol].ask));
 
         cache[symbol].bid = bestBid;
         cache[symbol].ask = bestAsk;
@@ -50,7 +50,7 @@ symbols.forEach((pairing) => {
         let outputAsk    = color(bestAsk, askDelta);
 
         if (bidDelta * 100 >= .5 || askDelta * 100 >= .5) {
-          console.log(`Symbol: ${outputSymbol}   Best Bid: ${outputBid}   Best Ask: ${outputAsk}   ${(bidDelta*100).toFixed(2)}%  ${(askDelta*100).toFixed(2)}%`);
+          console.log(`Symbol: ${outputSymbol}   Best Bid: ${outputBid}   Best Ask: ${outputAsk}   ${format((bidDelta*100).toFixed(2), 6)}%  ${format((askDelta*100).toFixed(2), 6)}%`);
         }
       }
     });
@@ -63,13 +63,11 @@ const color = (val, delta) => {
     return val;
   }
 
-  const percentage = delta * 100;
+  const percentage = Math.abs(delta * 100);
 
-  if ( percentage < .5 ) {
-    return val;
-  } else if ( percentage < 1 ) {
-    return chalk.red(val);
-  } else if ( percentage < 1.5 ) {
+  if ( percentage < 1 ) {
+    return chalk.dim(val);
+  } else if ( percentage < 2 ) {
     return chalk.yellow(val);
   } else {
     return chalk.green(val);
@@ -77,6 +75,6 @@ const color = (val, delta) => {
 }
 
 // left pad
-const format = ( str ) => {
-  return `${' '.repeat(8-str.length)}${ str }`;
+const format = (str, pad = 8) => {
+  return `${' '.repeat(pad-str.length)}${ str }`;
 };
