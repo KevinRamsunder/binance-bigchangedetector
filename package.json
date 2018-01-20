@@ -13,6 +13,6 @@
   "dependencies": {
     "chalk": "^2.3.0",
     "dotenv": "^4.0.0",
-    "node-binance-api": "^0.4.4"
+    "node-binance-api": "git@github.com:KevinRamsunder/node-binance-api.git"
   }
 }
